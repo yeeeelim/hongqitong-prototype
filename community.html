@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>活力社区 - 红骑通</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/styles.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        .ios-device {
+            position: relative;
+            width: 375px;
+            height: 812px;
+            margin: 0 auto;
+            background-color: #f2f2f7;
+            border-radius: 40px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 10px solid #1a1a1a;
+        }
+        .dark .ios-device {
+            background-color: #000;
+            border-color: #2a2a2a;
+        }
+        .ios-status-bar {
+            height: 44px;
+            width: 100%;
+            background-color: #FF6B6B;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            position: relative;
+        }
+        .dark .ios-status-bar {
+            background-color: #FF8787;
+        }
+        .status-left {
+            display: flex;
+            align-items: center;
+        }
+        .status-right {
+            display: flex;
+            align-items: center;
+        }
+        .ios-content {
+            height: calc(100% - 44px - 83px);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .ios-tab-bar {
+            height: 83px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            padding-top: 10px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        .dark .ios-tab-bar {
+            background-color: rgba(0, 0, 0, 0.9);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .tab-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 60px;
+        }
+        .tab-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+            color: #8e8e93;
+        }
+        .tab-label {
+            font-size: 10px;
+            color: #8e8e93;
+        }
+        .tab-item.active .tab-icon,
+        .tab-item.active .tab-label {
+            color: #FF6B6B;
+        }
+        .dark .tab-item.active .tab-icon,
+        .dark .tab-item.active .tab-label {
+            color: #FF8787;
+        }
+        .community-header {
+            background-color: #FF6B6B;
+            padding: 16px;
+            color: white;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        .dark .community-header {
+            background-color: #FF8787;
+        }
+        .header-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .header-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        .user-stats {
+            display: flex;
+            justify-content: space-between;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        .segment-control {
+            display: flex;
+            background-color: white;
+            border-radius: 8px;
+            padding: 4px;
+            margin: 16px;
+        }
+        .dark .segment-control {
+            background-color: #1c1c1e;
+        }
+        .segment-item {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #666;
+            cursor: pointer;
+        }
+        .dark .segment-item {
+            color: #aaa;
+        }
+        .segment-item.active {
+            background-color: #FF6B6B;
+            color: white;
+        }
+        .dark .segment-item.active {
+            background-color: #FF8787;
+        }
+        .post-card {
+            background-color: white;
+            border-radius: 16px;
+            margin: 16px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .dark .post-card {
+            background-color: #1c1c1e;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            margin-right: 12px;
+            object-fit: cover;
+        }
+        .post-info {
+            flex: 1;
+        }
+        .post-author {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 2px;
+        }
+        .dark .post-author {
+            color: #fff;
+        }
+        .post-meta {
+            font-size: 12px;
+            color: #666;
+        }
+        .dark .post-meta {
+            color: #aaa;
+        }
+        .post-content {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+        .dark .post-content {
+            color: #fff;
+        }
+        .post-image {
+            width: 100%;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            object-fit: cover;
+        }
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #eee;
+            padding-top: 12px;
+        }
+        .dark .post-actions {
+            border-top-color: #2c2c2e;
+        }
+        .action-button {
+            display: flex;
+            align-items: center;
+            color: #666;
+            font-size: 14px;
+        }
+        .dark .action-button {
+            color: #aaa;
+        }
+        .action-button i {
+            margin-right: 4px;
+        }
+        .help-card {
+            background-color: white;
+            border-radius: 16px;
+            margin: 16px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .dark .help-card {
+            background-color: #1c1c1e;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .help-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .help-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            background-color: #FFE3E3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 12px;
+            color: #FF6B6B;
+            font-size: 20px;
+        }
+        .dark .help-icon {
+            background-color: rgba(255, 135, 135, 0.2);
+            color: #FF8787;
+        }
+        .help-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+        .dark .help-title {
+            color: #fff;
+        }
+        .help-desc {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+        .dark .help-desc {
+            color: #aaa;
+        }
+        .help-button {
+            background-color: #FF6B6B;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+        }
+        .dark .help-button {
+            background-color: #FF8787;
+        }
+    </style>
+</head>
+<body>
+    <div class="ios-device">
+        <div class="ios-status-bar">
+            <div class="status-left">
+                <span class="status-time">9:41 AM</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal mr-1"></i>
+                <i class="fas fa-wifi mx-1"></i>
+                <i class="fas fa-battery-full ml-1"></i>
+            </div>
+        </div>
+        
+        <div class="ios-content">
+            <!-- 头部 -->
+            <div class="community-header">
+                <div class="header-title">活力社区</div>
+                <div class="header-subtitle">分享经验，互帮互助</div>
+                
+                <div class="user-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">128</div>
+                        <div class="stat-label">关注</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">256</div>
+                        <div class="stat-label">粉丝</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">32</div>
+                        <div class="stat-label">帖子</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">98</div>
+                        <div class="stat-label">获赞</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 分段控制器 -->
+            <div class="segment-control">
+                <div class="segment-item active">骑手圈</div>
+                <div class="segment-item">经验分享</div>
+                <div class="segment-item">互助联盟</div>
+            </div>
+            
+            <!-- 骑手圈内容 -->
+            <div class="post-card">
+                <div class="post-header">
+                    <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1480&q=80" alt="用户头像" class="avatar">
+                    <!-- 图片来源：https://unsplash.com/photos/tAvpDE7fXgY -->
+                    <div class="post-info">
+                        <div class="post-author">李师傅</div>
+                        <div class="post-meta">资深骑手 · 2分钟前</div>
+                    </div>
+                </div>
+                <div class="post-content">
+                    分享一下今天遇到的暖心故事，送餐途中遇到一位老奶奶需要帮忙过马路，虽然耽误了几分钟，但看到老人家开心的笑容，觉得特别值得！🌟
+                </div>
+                <img src="https://images.unsplash.com/photo-1447069387593-a5de0862481e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1469&q=80" alt="暖心故事" class="post-image">
+                <!-- 图片来源：https://unsplash.com/photos/DFtjXYd5Pto -->
+                <div class="post-actions">
+                    <div class="action-button">
+                        <i class="far fa-heart"></i>
+                        <span>32</span>
+                    </div>
+                    <div class="action-button">
+                        <i class="far fa-comment"></i>
+                        <span>8</span>
+                    </div>
+                    <div class="action-button">
+                        <i class="far fa-share-square"></i>
+                        <span>分享</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="post-card">
+                <div class="post-header">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" alt="用户头像" class="avatar">
+                    <!-- 图片来源：https://unsplash.com/photos/mEZ3PoFGs_k -->
+                    <div class="post-info">
+                        <div class="post-author">小王</div>
+                        <div class="post-meta">配送达人 · 15分钟前</div>
+                    </div>
+                </div>
+                <div class="post-content">
+                    今天参加了平台组织的安全培训，学到了很多实用的技巧，特别是雨天行车的注意事项，分享给大家！💪
+                </div>
+                <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1469&q=80" alt="安全培训" class="post-image">
+                <!-- 图片来源：https://unsplash.com/photos/YRMWVcdyhmI -->
+                <div class="post-actions">
+                    <div class="action-button">
+                        <i class="far fa-heart"></i>
+                        <span>45</span>
+                    </div>
+                    <div class="action-button">
+                        <i class="far fa-comment"></i>
+                        <span>12</span>
+                    </div>
+                    <div class="action-button">
+                        <i class="far fa-share-square"></i>
+                        <span>分享</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 互助联盟卡片 -->
+            <div class="help-card">
+                <div class="help-header">
+                    <div class="help-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <div class="help-title">互助联盟</div>
+                </div>
+                <div class="help-desc">
+                    加入骑手互助联盟，获得更多帮助和支持。我们一起互帮互助，共同成长！
+                </div>
+                <div class="help-button">立即加入</div>
+            </div>
+        </div>
+        
+        <!-- 底部标签栏 -->
+        <div class="ios-tab-bar">
+            <div class="tab-item" onclick="window.location.href='home.html'">
+                <i class="tab-icon fas fa-home"></i>
+                <span class="tab-label">首页</span>
+            </div>
+            <div class="tab-item" onclick="window.location.href='policy.html'">
+                <i class="tab-icon fas fa-shield-alt"></i>
+                <span class="tab-label">政策</span>
+            </div>
+            <div class="tab-item" onclick="window.location.href='insurance.html'">
+                <i class="tab-icon fas fa-heartbeat"></i>
+                <span class="tab-label">保险</span>
+            </div>
+            <div class="tab-item" onclick="window.location.href='academy.html'">
+                <i class="tab-icon fas fa-graduation-cap"></i>
+                <span class="tab-label">学院</span>
+            </div>
+            <div class="tab-item" onclick="window.location.href='points.html'">
+                <i class="tab-icon fas fa-gift"></i>
+                <span class="tab-label">积分</span>
+            </div>
+            <div class="tab-item" onclick="window.location.href='express.html'">
+                <i class="tab-icon fas fa-bolt"></i>
+                <span class="tab-label">速通</span>
+            </div>
+            <div class="tab-item active" onclick="window.location.href='community.html'">
+                <i class="tab-icon fas fa-users"></i>
+                <span class="tab-label">社区</span>
+            </div>
+            <div class="tab-item" onclick="window.location.href='profile.html'">
+                <i class="tab-icon fas fa-user"></i>
+                <span class="tab-label">我的</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 更新状态栏时间
+        function updateStatusTime() {
+            const timeElement = document.querySelector('.status-time');
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // 12小时制
+            
+            timeElement.textContent = `${hours}:${minutes} ${ampm}`;
+        }
+        
+        // 初始化时间并每分钟更新
+        updateStatusTime();
+        setInterval(updateStatusTime, 60000);
+        
+        // 分段控制器点击效果
+        const segments = document.querySelectorAll('.segment-item');
+        segments.forEach(segment => {
+            segment.addEventListener('click', function() {
+                segments.forEach(s => s.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // 点赞按钮效果
+        const likeButtons = document.querySelectorAll('.action-button');
+        likeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                this.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 100);
+            });
+        });
+        
+        // 互助联盟按钮点击效果
+        const helpButton = document.querySelector('.help-button');
+        helpButton.addEventListener('click', function() {
+            this.style.opacity = '0.8';
+            setTimeout(() => {
+                this.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>

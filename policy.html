@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>政策与法律支持 - 红骑通</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/styles.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        .ios-device {
+            position: relative;
+            width: 375px;
+            height: 812px;
+            margin: 0 auto;
+            background-color: #f2f2f7;
+            border-radius: 40px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 10px solid #1a1a1a;
+        }
+        .dark .ios-device {
+            background-color: #000;
+            border-color: #2a2a2a;
+        }
+        .ios-status-bar {
+            height: 44px;
+            width: 100%;
+            background-color: #1976D2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            position: relative;
+        }
+        .dark .ios-status-bar {
+            background-color: #2196F3;
+        }
+        .status-left {
+            display: flex;
+            align-items: center;
+        }
+        .status-right {
+            display: flex;
+            align-items: center;
+        }
+        .ios-content {
+            height: calc(100% - 44px - 83px);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .ios-tab-bar {
+            height: 83px; /* 包含底部安全区域 */
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            padding-top: 10px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        .dark .ios-tab-bar {
+            background-color: rgba(0, 0, 0, 0.9);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .tab-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 60px;
+        }
+        .tab-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+            color: #8e8e93;
+        }
+        .tab-label {
+            font-size: 10px;
+            color: #8e8e93;
+        }
+        .tab-item.active .tab-icon,
+        .tab-item.active .tab-label {
+            color: #1976D2;
+        }
+        .dark .tab-item.active .tab-icon,
+        .dark .tab-item.active .tab-label {
+            color: #2196F3;
+        }
+        .policy-header {
+            background-color: #1976D2;
+            padding: 16px;
+            color: white;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        .dark .policy-header {
+            background-color: #2196F3;
+        }
+        .header-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .header-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        .search-bar {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            margin-top: 16px;
+        }
+        .search-icon {
+            color: white;
+            margin-right: 8px;
+        }
+        .search-input {
+            background: transparent;
+            border: none;
+            color: white;
+            flex: 1;
+            font-size: 14px;
+        }
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .policy-tabs {
+            display: flex;
+            background-color: white;
+            border-radius: 10px;
+            margin: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .dark .policy-tabs {
+            background-color: #1c1c1e;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .policy-tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px 0;
+            font-size: 14px;
+            font-weight: 500;
+            color: #8e8e93;
+            position: relative;
+        }
+        .policy-tab.active {
+            color: #1976D2;
+        }
+        .dark .policy-tab.active {
+            color: #2196F3;
+        }
+        .policy-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 25%;
+            width: 50%;
+            height: 3px;
+            background-color: #1976D2;
+            border-radius: 1.5px;
+        }
+        .dark .policy-tab.active::after {
+            background-color: #2196F3;
+        }
+        .policy-section {
+            padding: 0 16px 16px;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        .dark .section-title {
+            color: #fff;
+        }
+        .section-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            background-color: #1976D2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 8px;
+            color: white;
+            font-size: 14px;
+        }
+        .dark .section-icon {
+            background-color: #2196F3;
+        }
+        .policy-card {
+            background-color: white;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .dark .policy-card {
+            background-color: #1c1c1e;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .policy-card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .policy-card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            background-color: #E3F2FD;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 12px;
+            color: #1976D2;
+            font-size: 20px;
+        }
+        .dark .policy-card-icon {
+            background-color: rgba(33, 150, 243, 0.2);
+        }
+        .policy-card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+        .dark .policy-card-title {
+            color: #fff;
+        }
+        .policy-card-desc {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+        .dark .policy-card-desc {
+            color: #aaa;
+        }
+        .policy-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #8e8e93;
+        }
+        .policy-card-meta {
+            display: flex;
+            align-items: center;
+        }
+        .policy-card-meta i {
+            margin-right: 4px;
+        }
+        .policy-card-meta span {
+            margin-right: 8px;
+        }
+        .policy-card-action {
+            color: #1976D2;
+            font-weight: 500;
+        }
+        .dark .policy-card-action {
+            color: #2196F3;
+        }
+        .policy-list {
+            background-color: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 16px;
+        }
+        .dark .policy-list {
+            background-color: #1c1c1e;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .policy-item {
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .dark .policy-item {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .policy-item:last-child {
+            border-bottom: none;
+        }
+        .policy-item-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 18px;
+            background-color: #E3F2FD;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 12px;
+            color: #1976D2;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        .dark .policy-item-icon {
+            background-color: rgba(33, 150, 243, 0.2);
+        }
+        .policy-item-content {
+            flex: 1;
+        }
+        .policy-item-title {
+            font-size: 15px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        .dark .policy-item-title {
+            color: #fff;
+        }
+        .policy-item-desc {
+            font-size: 13px;
+            color: #8e8e93;
+        }
+        .policy-item-arrow {
+            color: #c7c7cc;
+            margin-left: 8px;
+        }
+        .service-card {
+            background-color: white;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+        }
+        .dark .service-card {
+            background-color: #1c1c1e;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .service-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 24px;
+            background-color: #E3F2FD;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 16px;
+            color: #1976D2;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+        .dark .service-icon {
+            background-color: rgba(33, 150, 243, 0.2);
+        }
+        .service-content {
+            flex: 1;
+        }
+        .service-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        .dark .service-title {
+            color: #fff;
+        }
+        .service-desc {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.4;
+        }
+        .dark .service-desc {
+            color: #aaa;
+        }
+        .service-button {
+            background-color: #1976D2;
+            color: white;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-left: 12px;
+            flex-shrink: 0;
+        }
+        .dark .service-button {
+            background-color: #2196F3;
+        }
+        .hot-topics {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -4px;
+        }
+        .topic-tag {
+            background-color: #E3F2FD;
+            color: #1976D2;
+            border-radius: 16px;
+            padding: 6px 12px;
+            font-size: 13px;
+            margin: 4px;
+            font-weight: 500;
+        }
+        .dark .topic-tag {
+            background-color: rgba(33, 150, 243, 0.2);
+            color: #2196F3;
+        }
+    </style>
+</head>
+<body>
+    <div class="ios-device">
+        <div class="ios-status-bar">
+            <div class="status-left">
+                <span class="status-time">9:41 AM</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal mr-1"></i>
+                <i class="fas fa-wifi mx-1"></i>
+                <i class="fas fa-battery-full ml-1"></i>
+            </div>
+        </div>
+        
+        <div class="ios-content">
+            <!-- 头部 -->
+            <div class="policy-header">
+                <div class="header-title">政策与法律支持</div>
+                <div class="header-subtitle">了解最新政策，维护合法权益</div>
+                
+                <div class="search-bar">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" placeholder="搜索政策法规、案例解析...">
+                </div>
+            </div>
+            
+            <!-- 标签页 -->
+            <div class="policy-tabs">
+                <div class="policy-tab active">政策解读</div>
+                <div class="policy-tab">权益维护</div>
+                <div class="policy-tab">法律咨询</div>
+            </div>
+            
+            <!-- 热门话题 -->
+            <div class="policy-section">
+                <div class="section-title">
+                    <div class="section-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    热门话题
+                </div>
+                
+                <div class="hot-topics">
+                    <div class="topic-tag">工伤认定</div>
+                    <div class="topic-tag">社保缴纳</div>
+                    <div class="topic-tag">劳动合同</div>
+                    <div class="topic-tag">薪资结算</div>
+                    <div class="topic-tag">交通事故</div>
+                    <div class="topic-tag">税收政策</div>
+                    <div class="topic-tag">平台规则</div>
+                    <div class="topic-tag">投诉处理</div>
+                </div>
+            </div>
+            
+            <!-- 政策解读中心 -->
+            <div class="policy-section">
+                <div class="section-title">
+                    <div class="section-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    政策解读中心
+                </div>
+                
+                <div class="policy-card">
+                    <div class="policy-card-header">
+                        <div class="policy-card-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="policy-card-title">《外卖骑手权益保障条例》解读</div>
+                    </div>
+                    <div class="policy-card-desc">
+                        最新发布的《外卖骑手权益保障条例》对骑手工作时间、薪资结算、社保缴纳等方面做出了明确规定，本文将为您详细解读条例内容及实施细则。
+                    </div>
+                    <div class="policy-card-footer">
+                        <div class="policy-card-meta">
+                            <i class="far fa-eye"></i>
+                            <span>2,356</span>
+                            <i class="far fa-calendar"></i>
+                            <span>2023-06-15</span>
+                        </div>
+                        <div class="policy-card-action">查看详情</div>
+                    </div>
+                </div>
+                
+                <div class="policy-list">
+                    <div class="policy-item">
+                        <div class="policy-item-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="policy-item-content">
+                            <div class="policy-item-title">骑手社保新政策：参保范围与缴费标准</div>
+                            <div class="policy-item-desc">2023-05-20 · 人力资源部</div>
+                        </div>
+                        <i class="fas fa-chevron-right policy-item-arrow"></i>
+                    </div>
+                    
+                    <div class="policy-item">
+                        <div class="policy-item-icon">
+                            <i class="fas fa-hand-holding-usd"></i>
+                        </div>
+                        <div class="policy-item-content">
+                            <div class="policy-item-title">配送员薪资结算规则与透明度要求解析</div>
+                            <div class="policy-item-desc">2023-05-10 · 劳动监察局</div>
+                        </div>
+                        <i class="fas fa-chevron-right policy-item-arrow"></i>
+                    </div>
+                    
+                    <div class="policy-item">
+                        <div class="policy-item-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="policy-item-content">
+                            <div class="policy-item-title">工作时长与休息时间：新规定详解</div>
+                            <div class="policy-item-desc">2023-04-28 · 劳动保障监察大队</div>
+                        </div>
+                        <i class="fas fa-chevron-right policy-item-arrow"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 权益维护通道 -->
+            <div class="policy-section">
+                <div class="section-title">
+                    <div class="section-icon">
+                        <i class="fas fa-gavel"></i>
+                    </div>
+                    权益维护通道
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div class="service-content">
+                        <div class="service-title">在线投诉反馈</div>
+                        <div class="service-desc">遇到不公平待遇？提交投诉，我们将在24小时内响应</div>
+                    </div>
+                    <div class="service-button">去投诉</div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <div class="service-content">
+                        <div class="service-title">调解申请</div>
+                        <div class="service-desc">与平台或商户存在纠纷？申请专业调解服务</div>
+                    </div>
+                    <div class="service-button">申请</div>
+                </div>
+                
+                <div class="policy-list">
+                    <div class="policy-item">
+                        <div class="policy-item-icon">
+                            <i class="fas fa-file-signature"></i>
+                        </div>
+                        <div class="policy-item-content">
+                            <div class="policy-item-title">我的投诉记录</div>
+                            <div class="policy-item-desc">查看历史投诉及处理进度</div>
+                        </div>
+                        <i class="fas fa-chevron-right policy-item-arrow"></i>
+                    </div>
+                    
+                    <div class="policy-item">
+                        <div class="policy-item-icon">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                        <div class="policy-item-content">
+                            <div class="policy-item-title">权益保障案例库</div>
+                            <div class="policy-item-desc">浏览真实案例，了解维权流程</div>
+                        </div>
+                        <i class="fas fa-chevron-right policy-item-arrow"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 法律咨询服务 -->
+            <div class="policy-section">
+                <div class="section-title">
+                    <div class="section-icon">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    法律咨询服务
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="service-content">
+                        <div class="service-title">专业律师咨询</div>
+                        <div class="service-desc">每周三次免费法律咨询，解答您的法律疑问</div>
+                    </div>
+                    <div class="service-button">咨询</div>
+                </div>
+                
+                <div class="policy-list">
+                    <div class="policy-item">
+                        <div class="policy-item-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="policy-item-content">
+                            <div class="policy-item-title">AI法律助手</div>
+                            <div class="policy-item-desc">24小时在线，快速回答常见法律问题</div>
+                        </div>
+                        <i class="fas fa-chevron-right policy-item-arrow"></i>
+                    </div>
+                    
+                    <div class="policy-item">
+                        <div class="policy-item-icon">
+                            <i class="fas fa-file-contract"></i>
+                        </div>
+                        <div class="policy-item-content">
+                            <div class="policy-item-title">合同文书模板</div>
+                            <div class="policy-item-desc">提供标准合同模板，保障您的权益</div>
+                        </div>
+                        <i class="fas fa-chevron-right policy-item-arrow"></i>
+                    </div>
+                    
+                    <div class="policy-item">
+                        <div class="policy-item-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <div class="policy-item-content">
+                            <div class="policy-item-title">法律知识讲堂</div>
+                            <div class="policy-item-desc">专业律师视频讲解常见法律问题</div>
+                        </div>
+                        <i class="fas fa-chevron-right policy-item-arrow"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部标签栏 -->
+        <div class="ios-tab-bar">
+            <div class="tab-item" onclick="window.location.href='home.html'">
+                <i class="tab-icon fas fa-home"></i>
+                <span class="tab-label">首页</span>
+            </div>
+            <div class="tab-item active" onclick="window.location.href='policy.html'">
+                <i class="tab-icon fas fa-shield-alt"></i>
+                <span class="tab-label">政策</span>
+            </div>
+            <div class="tab-item" onclick="window.location.href='insurance.html'">
+                <i class="tab-icon fas fa-heartbeat"></i>
+                <span class="tab-label">保险</span>
+            </div>
+            <div class="tab-item" onclick="window.location.href='academy.html'">
+                <i class="tab-icon fas fa-graduation-cap"></i>
+                <span class="tab-label">学院</span>
+            </div>
+            <div class="tab-item" onclick="window.location.href='community.html'">
+                <i class="tab-icon fas fa-users"></i>
+                <span class="tab-label">社区</span>
+            </div>
+            <div class="tab-item" onclick="window.location.href='profile.html'">
+                <i class="tab-icon fas fa-user"></i>
+                <span class="tab-label">我的</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 更新状态栏时间
+        function updateStatusTime() {
+            const timeElement = document.querySelector('.status-time');
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // 12小时制
+            
+            timeElement.textContent = `${hours}:${minutes} ${ampm}`;
+        }
+        
+        // 初始化时间并每分钟更新
+        updateStatusTime();
+        setInterval(updateStatusTime, 60000);
+        
+        // 标签页切换
+        const tabs = document.querySelectorAll('.policy-tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                tabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                // 这里可以添加实际的标签页内容切换逻辑
+            });
+        });
+        
+        // 卡片点击效果
+        const cards = document.querySelectorAll('.policy-card, .service-card, .policy-item');
+        cards.forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.opacity = '0.7';
+                setTimeout(() => {
+                    this.style.opacity = '1';
+                }, 100);
+            });
+        });
+        
+        // 服务按钮点击效果
+        const buttons = document.querySelectorAll('.service-button');
+        buttons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation(); // 阻止冒泡到卡片
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 100);
+            });
+        });
+    </script>
+</body>
+</html>

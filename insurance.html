@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>保险服务 - 红骑通</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/styles.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        .ios-device {
+            position: relative;
+            width: 375px;
+            height: 812px;
+            margin: 0 auto;
+            background-color: #f2f2f7;
+            border-radius: 40px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 10px solid #1a1a1a;
+        }
+        .dark .ios-device {
+            background-color: #000;
+            border-color: #2a2a2a;
+        }
+        .ios-status-bar {
+            height: 44px;
+            width: 100%;
+            background-color: #4CAF50;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            position: relative;
+        }
+        .dark .ios-status-bar {
+            background-color: #66BB6A;
+        }
+        .status-left {
+            display: flex;
+            align-items: center;
+        }
+        .status-right {
+            display: flex;
+            align-items: center;
+        }
+        .ios-content {
+            height: calc(100% - 44px - 83px);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .ios-tab-bar {
+            height: 83px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            padding-top: 10px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        .dark .ios-tab-bar {
+            background-color: rgba(0, 0, 0, 0.9);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .tab-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 60px;
+        }
+        .tab-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+            color: #8e8e93;
+        }
+        .tab-label {
+            font-size: 10px;
+            color: #8e8e93;
+        }
+        .tab-item.active .tab-icon,
+        .tab-item.active .tab-label {
+            color: #4CAF50;
+        }
+        .dark .tab-item.active .tab-icon,
+        .dark .tab-item.active .tab-label {
+            color: #66BB6A;
+        }
+        .insurance-header {
+            background-color: #4CAF50;
+            padding: 16px;
+            color: white;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        .dark .insurance-header {
+            background-color: #66BB6A;
+        }
+        .header-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .header-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        .insurance-status {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .status-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        .status-title i {
+            margin-right: 8px;
+        }
+        .status-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .status-text {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        .status-action {
+            background-color: white;
+            color: #4CAF50;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        .dark .status-action {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #66BB6A;
+        }
+        .insurance-section {
+            padding: 16px;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        .dark .section-title {
+            color: #fff;
+        }
+        .section-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            background-color: #4CAF50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 8px;
+            color: white;
+            font-size: 14px;
+        }
+        .dark .section-icon {
+            background-color: #66BB6A;
+        }
+        .insurance-card {
+            background-color: white;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .dark .insurance-card {
+            background-color: #1c1c1e;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .insurance-card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .insurance-card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            background-color: #E8F5E9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 12px;
+            color: #4CAF50;
+            font-size: 20px;
+        }
+        .dark .insurance-card-icon {
+            background-color: rgba(102, 187, 106, 0.2);
+            color: #66BB6A;
+        }
+        .insurance-card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+        .dark .insurance-card-title {
+            color: #fff;
+        }
+        .insurance-card-desc {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+        .dark .insurance-card-desc {
+            color: #aaa;
+        }
+        .insurance-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .insurance-card-price {
+            color: #4CAF50;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .dark .insurance-card-price {
+            color: #66BB6A;
+        }
+        .insurance-card-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .dark .insurance-card-button {
+            background-color: #66BB6A;
+        }
+        .claim-process {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 0 8px;
+            margin-bottom: 24px;
+        }
+        .process-step {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        .process-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 16px;
+            right: -50%;
+            width: 100%;
+            height: 2px;
+            background-color: #E8F5E9;
+            z-index: 1;
+        }
+        .dark .process-step:not(:last-child)::after {
+            background-color: rgba(102, 187, 106, 0.2);
+        }
+        .step-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 16px;
+            background-color: #E8F5E9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #4CAF50;
+            font-size: 16px;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 2;
+        }
+        .dark .step-icon {
+            background-color: rgba(102, 187, 106, 0.2);
+            color: #66BB6A;
+        }
+        .step-text {
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+        }
+        .dark .step-text {
+            color: #aaa;
+        }
+        .upgrade-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .upgrade-option {
+            background-color: white;
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .dark .upgrade-option {
+            background-color: #1c1c1e;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .option-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 24px;
+            background-color: #E8F5E9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 8px;
+            color: #4CAF50;
+            font-size: 24px;
+        }
+        .dark .option-icon {
+            background-color: rgba(102, 187, 106, 0.2);
+            color: #66BB6A;
+        }
+        .option-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        .dark .option-title {
+            color: #fff;
+        }
+        .option-desc {
+            font-size: 12px;
+            color: #666;
+        }
+        .dark .option-desc {
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <div class="ios-device">
+        <div class="ios-status-bar">
+            <div class="status-left">
+                <span class="status-time">9:41 AM</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal mr-1"></i>
+                <i class="fas fa-wifi mx-1"></i>
+                <i class="fas fa-battery-full ml-1"></i>
+            </div>
+        </div>
+        
+        <div class="ios-content">
+            <!-- 头部 -->
+            <div class="insurance-header">
+                <div class="header-title">保险服务</div>
+                <div class="header-subtitle">为您的每一次出行保驾护航</div>
+                
+                <div class="insurance-status">
+                    <div class="status-title">
+                        <i class="fas fa-shield-alt"></i>
+                        当前保障状态
+                    </div>
+                    <div class="status-info">
+                        <div class="status-text">意外伤害保险 - 有效期至 2024/12/31</div>
+                        <div class="status-action">查看详情</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 极速投保通道 -->
+            <div class="insurance-section">
+                <div class="section-title">
+                    <div class="section-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    极速投保通道
+                </div>
+                
+                <div class="insurance-card">
+                    <div class="insurance-card-header">
+                        <div class="insurance-card-icon">
+                            <i class="fas fa-umbrella"></i>
+                        </div>
+                        <div class="insurance-card-title">骑手意外伤害保险</div>
+                    </div>
+                    <div class="insurance-card-desc">
+                        提供24小时全天候意外伤害保障，包含医疗费用报销、伤残赔付等多重保障。
+                    </div>
+                    <div class="insurance-card-footer">
+                        <div class="insurance-card-price">¥39.9/月</div>
+                        <div class="insurance-card-button">立即投保</div>
+                    </div>
+                </div>
+                
+                <div class="insurance-card">
+                    <div class="insurance-card-header">
+                        <div class="insurance-card-icon">
+                            <i class="fas fa-car-crash"></i>
+                        </div>
+                        <div class="insurance-card-title">第三方责任险</div>
+                    </div>
+                    <div class="insurance-card-desc">
+                        为配送过程中可能发生的第三方损害提供赔付保障，降低您的运营风险。
+                    </div>
+                    <div class="insurance-card-footer">
+                        <div class="insurance-card-price">¥29.9/月</div>
+                        <div class="insurance-card-button">立即投保</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 理赔申请流程 -->
+            <div class="insurance-section">
+                <div class="section-title">
+                    <div class="section-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    理赔申请流程
+                </div>
+                
+                <div class="claim-process">
+                    <div class="process-step">
+                        <div class="step-icon">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                        <div class="step-text">填写申请</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-icon">
+                            <i class="fas fa-file-upload"></i>
+                        </div>
+                        <div class="step-text">上传材料</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="step-text">审核确认</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="step-text">赔付到账</div>
+                    </div>
+                </div>
+                
+                <div class="insurance-card">
+                    <div class="insurance-card-header">
+                        <div class="insurance-card-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="insurance-card-title">在线理赔咨询</div>
+                    </div>
+                    <div class="insurance-card-desc">
+                        专业理赔顾问在线解答您的疑问，提供理赔指导服务。
+                    </div>
+                    <div class="insurance-card-footer">
+                        <div class="insurance-card-button" style="width: 100%; text-align: center;">
+                            立即咨询
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 保障升级计划 -->
+            <div class="insurance-section">
+                <div class="section-title">
+                    <div class="section-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    保障升级计划
+                </div>
+                
+                <div class="upgrade-options">
+                    <div class="upgrade-option">
+                        <div class="option-icon">
+                            <i class="fas fa-hospital"></i>
+                        </div>
+                        <div class="option-title">住院医疗</div>
+                        <div class="option-desc">提升住院医疗保障额度</div>
+                    </div>
+                    
+                    <div class="upgrade-option">
+                        <div class="option-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div class="option-title">人身意外</div>
+                        <div class="option-desc">增加意外伤害保障</div>
+                    </div>
+                    
+                    <div class="upgrade-option">
+                        <div class="option-icon">
+                            <i class="fas fa-briefcase-medical"></i>
+                        </div>
+                        <div class="option-title">门诊医疗</div>
+                        <div class="option-desc">新增门诊医疗保障</div>
+                    </div>
+                    
+                    <div class="upgrade-option">
+                        <div class="option-icon">
+                            <i class="fas fa-hand-holding-heart"></i>
+                        </div>
+                        <div class="option-title">家庭保障</div>
+                        <div class="option-desc">扩展家庭成员保障</div>
+                    </div>
+                </div>
+                
+                <div class="insurance-card">
+                    <div class="insurance-card-header">
+                        <div class="insurance-card-icon">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <div class="insurance-card-title">金牌骑手专属升级</div>
+                    </div>
+                    <div class="insurance-card-desc">
+                        为金牌骑手提供更高额度的保障和专属服务，享受VIP理赔通道。
+                    </div>
+                    <div class="insurance-card-footer">
+                        <div class="insurance-card-price">享8.8折优惠</div>
+                        <div class="insurance-card-button">了解详情</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部标签栏 -->
+        <div class="ios-tab-bar">
+            <div class="tab-item" onclick="window.location.href='home.html'">
+                <i class="tab-icon fas fa-home"></i>
+                <span class="tab-label">首页</span>
+            </div>
+            <div class="tab-item" onclick="window.location.href='policy.html'">
+                <i class="tab-icon fas fa-shield-alt"></i>
+                <span class="tab-label">政策</span>
+            </div>
+            <div class="tab-item active" onclick="window.location.href='insurance.html'">
+                <i class="tab-icon fas fa-heartbeat"></i>
+                <span class="tab-label">保险</span>
+            </div>
+            <div class="tab-item" onclick="window.location.href='academy.html'">
+                <i class="tab-icon fas fa-graduation-cap"></i>
+                <span class="tab-label">学院</span>
+            </div>
+            <div class="tab-item" onclick="window.location.href='community.html'">
+                <i class="tab-icon fas fa-users"></i>
+                <span class="tab-label">社区</span>
+            </div>
+            <div class="tab-item" onclick="window.location.href='profile.html'">
+                <i class="tab-icon fas fa-user"></i>
+                <span class="tab-label">我的</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 更新状态栏时间
+        function updateStatusTime() {
+            const timeElement = document.querySelector('.status-time');
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // 12小时制
+            
+            timeElement.textContent = `${hours}:${minutes} ${ampm}`;
+        }
+        
+        // 初始化时间并每分钟更新
+        updateStatusTime();
+        setInterval(updateStatusTime, 60000);
+        
+        // 添加点击效果
+        const cards = document.querySelectorAll('.insurance-card, .upgrade-option');
+        cards.forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 100);
+            });
+        });
+        
+        // 按钮点击效果
+        const buttons = document.querySelectorAll('.insurance-card-button, .status-action');
+        buttons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation(); // 阻止冒泡到卡片
+                this.style.opacity = '0.8';
+                setTimeout(() => {
+                    this.style.opacity = '1';
+                }, 100);
+            });
+        });
+    </script>
+</body>
+</html>

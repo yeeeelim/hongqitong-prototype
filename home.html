@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首页 - 红骑通</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/styles.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        .ios-device {
+            position: relative;
+            width: 375px;
+            height: 812px;
+            margin: 0 auto;
+            background-color: #f2f2f7;
+            border-radius: 40px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 10px solid #1a1a1a;
+        }
+        .dark .ios-device {
+            background-color: #000;
+            border-color: #2a2a2a;
+        }
+        .ios-status-bar {
+            height: 44px;
+            width: 100%;
+            background-color: #E53935;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            position: relative;
+        }
+        .dark .ios-status-bar {
+            background-color: #FF5252;
+        }
+        .status-left {
+            display: flex;
+            align-items: center;
+        }
+        .status-right {
+            display: flex;
+            align-items: center;
+        }
+        .ios-content {
+            height: calc(100% - 44px - 83px);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .ios-tab-bar {
+            height: 83px; /* 包含底部安全区域 */
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            padding-top: 10px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        .dark .ios-tab-bar {
+            background-color: rgba(0, 0, 0, 0.9);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .tab-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 60px;
+        }
+        .tab-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+            color: #8e8e93;
+        }
+        .tab-label {
+            font-size: 10px;
+            color: #8e8e93;
+        }
+        .tab-item.active .tab-icon,
+        .tab-item.active .tab-label {
+            color: #E53935;
+        }
+        .dark .tab-item.active .tab-icon,
+        .dark .tab-item.active .tab-label {
+            color: #FF5252;
+        }
+        .home-header {
+            background-color: #E53935;
+            padding: 16px;
+            color: white;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        .dark .home-header {
+            background-color: #FF5252;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+        }
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .user-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .user-level {
+            font-size: 12px;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+        }
+        .level-icon {
+            margin-right: 4px;
+        }
+        .data-cards {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+        }
+        .data-card {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 12px;
+            flex: 1;
+            margin: 0 4px;
+            text-align: center;
+        }
+        .data-value {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .data-label {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        .weather-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 12px;
+            margin-top: 16px;
+        }
+        .weather-left {
+            display: flex;
+            align-items: center;
+        }
+        .weather-icon {
+            font-size: 24px;
+            margin-right: 12px;
+        }
+        .weather-temp {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .weather-desc {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 2px;
+        }
+        .weather-right {
+            text-align: right;
+        }
+        .weather-air {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            padding: 16px;
+        }
+        .feature-item {
+            background-color: white;
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .dark .feature-item {
+            background-color: #1c1c1e;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 24px;
+            color: white;
+        }
+        .feature-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            text-align: center;
+        }
+        .dark .feature-name {
+            color: #fff;
+        }
+        .news-section {
+            padding: 0 16px 16px;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+        .dark .section-title {
+            color: #fff;
+        }
+        .section-more {
+            font-size: 14px;
+            color: #8e8e93;
+        }
+        .news-list {
+            background-color: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .dark .news-list {
+            background-color: #1c1c1e;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .news-item {
+            padding: 16px;
+            display: flex;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .dark .news-item {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .news-item:last-child {
+            border-bottom: none;
+        }
+        .news-content {
+            flex: 1;
+        }
+        .news-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        .dark .news-title {
+            color: #fff;
+        }
+        .news-meta {
+            display: flex;
+            font-size: 12px;
+            color: #8e8e93;
+        }
+        .news-source {
+            margin-right: 8px;
+        }
+        .news-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            margin-left: 12px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .news-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .bg-policy {
+            background-color: #1976D2;
+        }
+        .bg-insurance {
+            background-color: #4CAF50;
+        }
+        .bg-academy {
+            background-color: #FF9800;
+        }
+        .bg-points {
+            background-color: #9C27B0;
+        }
+        .bg-express {
+            background-color: #00BCD4;
+        }
+        .bg-community {
+            background-color: #F44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="ios-device">
+        <div class="ios-status-bar">
+            <div class="status-left">
+                <span class="status-time">9:41 AM</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal mr-1"></i>
+                <i class="fas fa-wifi mx-1"></i>
+                <i class="fas fa-battery-full ml-1"></i>
+            </div>
+        </div>
+        
+        <div class="ios-content">
+            <!-- 头部用户信息 -->
+            <div class="home-header">
+                <div class="user-info">
+                    <div class="avatar">
+                        <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1180&q=80" alt="用户头像">
+                        <!-- 图片来源：Unsplash -->
+                    </div>
+                    <div>
+                        <div class="user-name">张师傅</div>
+                        <div class="user-level">
+                            <i class="fas fa-crown level-icon"></i>
+                            金牌骑手 · 3年资历
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="data-cards">
+                    <div class="data-card">
+                        <div class="data-value">128</div>
+                        <div class="data-label">本月订单</div>
+                    </div>
+                    <div class="data-card">
+                        <div class="data-value">4.9</div>
+                        <div class="data-label">平均评分</div>
+                    </div>
+                    <div class="data-card">
+                        <div class="data-value">3280</div>
+                        <div class="data-label">积分</div>
+                    </div>
+                </div>
+                
+                <div class="weather-info">
+                    <div class="weather-left">
+                        <i class="fas fa-cloud-sun weather-icon"></i>
+                        <div>
+                            <div class="weather-temp">26°C</div>
+                            <div class="weather-desc">多云转晴 · 北京</div>
+                        </div>
+                    </div>
+                    <div class="weather-right">
+                        <div class="weather-air">空气优 · AQI 58</div>
+                        <div class="weather-desc">适宜配送</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 功能网格 -->
+            <div class="feature-grid">
+                <div class="feature-item" onclick="window.location.href='policy.html'">
+                    <div class="feature-icon bg-policy">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="feature-name">政策与法律支持</div>
+                </div>
+                <div class="feature-item" onclick="window.location.href='insurance.html'">
+                    <div class="feature-icon bg-insurance">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <div class="feature-name">保险服务</div>
+                </div>
+                <div class="feature-item" onclick="window.location.href='academy.html'">
+                    <div class="feature-icon bg-academy">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="feature-name">成长学院</div>
+                </div>
+                <div class="feature-item" onclick="window.location.href='points.html'">
+                    <div class="feature-icon bg-points">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <div class="feature-name">积分激励</div>
+                </div>
+                <div class="feature-item" onclick="window.location.href='express.html'">
+                    <div class="feature-icon bg-express">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="feature-name">速通服务</div>
+                </div>
+                <div class="feature-item" onclick="window.location.href='community.html'">
+                    <div class="feature-icon bg-community">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="feature-name">活力社区</div>
+                </div>
+            </div>
+            
+            <!-- 资讯列表 -->
+            <div class="news-section">
+                <div class="section-header">
+                    <div class="section-title">骑手资讯</div>
+                    <div class="section-more">查看更多 <i class="fas fa-chevron-right"></i></div>
+                </div>
+                
+                <div class="news-list">
+                    <div class="news-item">
+                        <div class="news-content">
+                            <div class="news-title">外卖骑手权益保障新政策发布，工伤认定范围扩大</div>
+                            <div class="news-meta">
+                                <div class="news-source">人力资源部</div>
+                                <div class="news-time">2小时前</div>
+                            </div>
+                        </div>
+                        <div class="news-image">
+                            <img src="https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1240&q=80" alt="新闻图片">
+                            <!-- 图片来源：Unsplash -->
+                        </div>
+                    </div>
+                    
+                    <div class="news-item">
+                        <div class="news-content">
+                            <div class="news-title">夏季高温来袭，骑手防暑指南请查收</div>
+                            <div class="news-meta">
+                                <div class="news-source">健康中心</div>
+                                <div class="news-time">昨天</div>
+                            </div>
+                        </div>
+                        <div class="news-image">
+                            <img src="https://images.unsplash.com/photo-1583417319070-4a69db38a482?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1240&q=80" alt="新闻图片">
+                            <!-- 图片来源：Unsplash -->
+                        </div>
+                    </div>
+                    
+                    <div class="news-item">
+                        <div class="news-content">
+                            <div class="news-title">本月优秀骑手评选开始，丰厚奖励等你来拿</div>
+                            <div class="news-meta">
+                                <div class="news-source">运营中心</div>
+                                <div class="news-time">2天前</div>
+                            </div>
+                        </div>
+                        <div class="news-image">
+                            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1241&q=80" alt="新闻图片">
+                            <!-- 图片来源：Unsplash -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部标签栏 -->
+        <div class="ios-tab-bar">
+            <div class="tab-item active" onclick="window.location.href='home.html'">
+                <i class="tab-icon fas fa-home"></i>
+                <span class="tab-label">首页</span>
+            </div>
+            <div class="tab-item" onclick="window.location.href='policy.html'">
+                <i class="tab-icon fas fa-shield-alt"></i>
+                <span class="tab-label">政策</span>
+            </div>
+            <div class="tab-item" onclick="window.location.href='insurance.html'">
+                <i class="tab-icon fas fa-heartbeat"></i>
+                <span class="tab-label">保险</span>
+            </div>
+            <div class="tab-item" onclick="window.location.href='academy.html'">
+                <i class="tab-icon fas fa-graduation-cap"></i>
+                <span class="tab-label">学院</span>
+            </div>
+            <div class="tab-item" onclick="window.location.href='community.html'">
+                <i class="tab-icon fas fa-users"></i>
+                <span class="tab-label">社区</span>
+            </div>
+            <div class="tab-item" onclick="window.location.href='profile.html'">
+                <i class="tab-icon fas fa-user"></i>
+                <span class="tab-label">我的</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 更新状态栏时间
+        function updateStatusTime() {
+            const timeElement = document.querySelector('.status-time');
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // 12小时制
+            
+            timeElement.textContent = `${hours}:${minutes} ${ampm}`;
+        }
+        
+        // 初始化时间并每分钟更新
+        updateStatusTime();
+        setInterval(updateStatusTime, 60000);
+        
+        // 功能项点击效果
+        const featureItems = document.querySelectorAll('.feature-item');
+        featureItems.forEach(item => {
+            item.addEventListener('click', function() {
+                // 添加点击效果
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 100);
+            });
+        });
+    </script>
+</body>
+</html>

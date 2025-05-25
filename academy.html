@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>成长学院 - 红骑通</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/styles.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        .ios-device {
+            position: relative;
+            width: 375px;
+            height: 812px;
+            margin: 0 auto;
+            background-color: #f2f2f7;
+            border-radius: 40px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 10px solid #1a1a1a;
+        }
+        .dark .ios-device {
+            background-color: #000;
+            border-color: #2a2a2a;
+        }
+        .ios-status-bar {
+            height: 44px;
+            width: 100%;
+            background-color: #FF9800;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            position: relative;
+        }
+        .dark .ios-status-bar {
+            background-color: #FFA726;
+        }
+        .status-left {
+            display: flex;
+            align-items: center;
+        }
+        .status-right {
+            display: flex;
+            align-items: center;
+        }
+        .ios-content {
+            height: calc(100% - 44px - 83px);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .ios-tab-bar {
+            height: 83px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            padding-top: 10px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        .dark .ios-tab-bar {
+            background-color: rgba(0, 0, 0, 0.9);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .tab-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 60px;
+        }
+        .tab-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+            color: #8e8e93;
+        }
+        .tab-label {
+            font-size: 10px;
+            color: #8e8e93;
+        }
+        .tab-item.active .tab-icon,
+        .tab-item.active .tab-label {
+            color: #FF9800;
+        }
+        .dark .tab-item.active .tab-icon,
+        .dark .tab-item.active .tab-label {
+            color: #FFA726;
+        }
+        .academy-header {
+            background-color: #FF9800;
+            padding: 16px;
+            color: white;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        .dark .academy-header {
+            background-color: #FFA726;
+        }
+        .header-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .header-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        .progress-section {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .progress-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        .progress-title i {
+            margin-right: 8px;
+        }
+        .progress-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        .progress-bar {
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 75%;
+            background-color: white;
+            border-radius: 3px;
+        }
+        .course-section {
+            padding: 16px;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        .dark .section-title {
+            color: #fff;
+        }
+        .section-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            background-color: #FF9800;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 8px;
+            color: white;
+            font-size: 14px;
+        }
+        .dark .section-icon {
+            background-color: #FFA726;
+        }
+        .course-card {
+            background-color: white;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .dark .course-card {
+            background-color: #1c1c1e;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .course-image {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+        }
+        .course-content {
+            padding: 16px;
+        }
+        .course-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .dark .course-title {
+            color: #fff;
+        }
+        .course-info {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+        .dark .course-info {
+            color: #aaa;
+        }
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-right: 12px;
+        }
+        .info-item i {
+            margin-right: 4px;
+        }
+        .course-progress {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .progress-text {
+            font-size: 12px;
+            color: #FF9800;
+        }
+        .dark .progress-text {
+            color: #FFA726;
+        }
+        .progress-bar-small {
+            flex: 1;
+            height: 4px;
+            background-color: #f0f0f0;
+            border-radius: 2px;
+            margin: 0 8px;
+            overflow: hidden;
+        }
+        .dark .progress-bar-small {
+            background-color: #2c2c2e;
+        }
+        .progress-fill-small {
+            height: 100%;
+            background-color: #FF9800;
+            border-radius: 2px;
+        }
+        .dark .progress-fill-small {
+            background-color: #FFA726;
+        }
+        .mentor-section {
+            padding: 16px;
+        }
+        .mentor-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .mentor-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .dark .mentor-card {
+            background-color: #1c1c1e;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .mentor-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 32px;
+            margin: 0 auto 8px;
+            object-fit: cover;
+        }
+        .mentor-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        .dark .mentor-name {
+            color: #fff;
+        }
+        .mentor-title {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+        .dark .mentor-title {
+            color: #aaa;
+        }
+        .mentor-rating {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            color: #FF9800;
+        }
+        .dark .mentor-rating {
+            color: #FFA726;
+        }
+        .mentor-rating i {
+            margin-right: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="ios-device">
+        <div class="ios-status-bar">
+            <div class="status-left">
+                <span class="status-time">9:41 AM</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal mr-1"></i>
+                <i class="fas fa-wifi mx-1"></i>
+                <i class="fas fa-battery-full ml-1"></i>
+            </div>
+        </div>
+        
+        <div class="ios-content">
+            <!-- 头部 -->
+            <div class="academy-header">
+                <div class="header-title">成长学院</div>
+                <div class="header-subtitle">专业技能培训，助力职业发展</div>
+                
+                <div class="progress-section">
+                    <div class="progress-title">
+                        <i class="fas fa-chart-line"></i>
+                        学习进度
+                    </div>
+                    <div class="progress-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">已完成课程</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">36h</div>
+                            <div class="stat-label">学习时长</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">4</div>
+                            <div class="stat-label">获得证书</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 推荐课程 -->
+            <div class="course-section">
+                <div class="section-title">
+                    <div class="section-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    推荐课程
+                </div>
+                
+                <div class="course-card">
+                    <!-- 图片来源：Unsplash, https://unsplash.com/photos/5QgIuuBxKwM -->
+                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3" alt="安全驾驶课程" class="course-image">
+                    <div class="course-content">
+                        <div class="course-title">安全驾驶进阶课程</div>
+                        <div class="course-info">
+                            <div class="info-item">
+                                <i class="fas fa-clock"></i>
+                                2小时
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-user-graduate"></i>
+                                3642人学习
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-star"></i>
+                                4.9分
+                            </div>
+                        </div>
+                        <div class="course-progress">
+                            <span class="progress-text">已完成 75%</span>
+                            <div class="progress-bar-small">
+                                <div class="progress-fill-small" style="width: 75%"></div>
+                            </div>
+                            <span class="progress-text">继续学习</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <!-- 图片来源：Unsplash, https://unsplash.com/photos/5fNmWej4tAA -->
+                    <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85" alt="高效配送技巧" class="course-image">
+                    <div class="course-content">
+                        <div class="course-title">高效配送技巧与路线规划</div>
+                        <div class="course-info">
+                            <div class="info-item">
+                                <i class="fas fa-clock"></i>
+                                1.5小时
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-user-graduate"></i>
+                                2891人学习
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-star"></i>
+                                4.8分
+                            </div>
+                        </div>
+                        <div class="course-progress">
+                            <span class="progress-text">未开始</span>
+                            <div class="progress-bar-small">
+                                <div class="progress-fill-small" style="width: 0%"></div>
+                            </div>
+                            <span class="progress-text">开始学习</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 金牌讲师 -->
+            <div class="mentor-section">
+                <div class="section-title">
+                    <div class="section-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    金牌讲师
+                </div>
+                
+                <div class="mentor-grid">
+                    <div class="mentor-card">
+                        <!-- 图片来源：Unsplash, https://unsplash.com/photos/rDEOVtE7vOs -->
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e" alt="王教练" class="mentor-avatar">
+                        <div class="mentor-name">王教练</div>
+                        <div class="mentor-title">资深驾驶培训师</div>
+                        <div class="mentor-rating">
+                            <i class="fas fa-star"></i>
+                            4.9分
+                        </div>
+                    </div>
+                    
+                    <div class="mentor-card">
+                        <!-- 图片来源：Unsplash, https://unsplash.com/photos/mEZ3PoFGs_k -->
+                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956" alt="李老师" class="mentor-avatar">
+                        <div class="mentor-name">李老师</div>
+                        <div class="mentor-title">配送效率专家</div>
+                        <div class="mentor-rating">
+                            <i class="fas fa-star"></i>
+                            4.8分
+                        </div>
+                    </div>
+                    
+                    <div class="mentor-card">
+                        <!-- 图片来源：Unsplash, https://unsplash.com/photos/IF9TK5Uy-KI -->
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d" alt="张教练" class="mentor-avatar">
+                        <div class="mentor-name">张教练</div>
+                        <div class="mentor-title">安全规范讲师</div>
+                        <div class="mentor-rating">
+                            <i class="fas fa-star"></i>
+                            4.7分
+                        </div>
+                    </div>
+                    
+                    <div class="mentor-card">
+                        <!-- 图片来源：Unsplash, https://unsplash.com/photos/3TLl_97HNJo -->
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80" alt="陈老师" class="mentor-avatar">
+                        <div class="mentor-name">陈老师</div>
+                        <div class="mentor-title">客户服务专家</div>
+                        <div class="mentor-rating">
+                            <i class="fas fa-star"></i>
+                            4.9分
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部标签栏 -->
+        <div class="ios-tab-bar">
+            <div class="tab-item" onclick="window.location.href='home.html'">
+                <i class="tab-icon fas fa-home"></i>
+                <span class="tab-label">首页</span>
+            </div>
+            <div class="tab-item" onclick="window.location.href='policy.html'">
+                <i class="tab-icon fas fa-shield-alt"></i>
+                <span class="tab-label">政策</span>
+            </div>
+            <div class="tab-item" onclick="window.location.href='insurance.html'">
+                <i class="tab-icon fas fa-heartbeat"></i>
+                <span class="tab-label">保险</span>
+            </div>
+            <div class="tab-item active" onclick="window.location.href='academy.html'">
+                <i class="tab-icon fas fa-graduation-cap"></i>
+                <span class="tab-label">学院</span>
+            </div>
+            <div class="tab-item" onclick="window.location.href='community.html'">
+                <i class="tab-icon fas fa-users"></i>
+                <span class="tab-label">社区</span>
+            </div>
+            <div class="tab-item" onclick="window.location.href='profile.html'">
+                <i class="tab-icon fas fa-user"></i>
+                <span class="tab-label">我的</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 更新状态栏时间
+        function updateStatusTime() {
+            const timeElement = document.querySelector('.status-time');
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // 12小时制
+            
+            timeElement.textContent = `${hours}:${minutes} ${ampm}`;
+        }
+        
+        // 初始化时间并每分钟更新
+        updateStatusTime();
+        setInterval(updateStatusTime, 60000);
+        
+        // 添加点击效果
+        const cards = document.querySelectorAll('.course-card, .mentor-card');
+        cards.forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 100);
+            });
+        });
+    </script>
+</body>
+</html>
